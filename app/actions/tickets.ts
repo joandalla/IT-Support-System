@@ -1,23 +1,18 @@
-"use server";
-
-import { db } from "../../lib/db"; // Greift auf unsere lib/db.ts zu
+import { db } from "../../lib/db";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
-// Hilfsfunktion: Erstellt einen Test-User, falls keiner existiert.
-// Das spart uns für die Prüfung eine komplexe Login-Verwaltung.
-async function getOrCreateTestUser() {
-  const existingUser = await db.user.findFirst();
-  if (existingUser) return existingUser;
-
-  return await db.user.create({
-    data: {
-      email: "test.entwickler@firma.de",
-      name: "Max Mustermann",
-    },
-  });
+// Hilfsfunktion: Holt die ID des aktuell angemeldeten Users aus dem Session-Cookie
+async function getLoggedInUserId() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session");
+  if (!sessionCookie) {
+    throw new Error("Nicht autorisiert. Bitte loggen Sie sich ein.");
+  }
+  return sessionCookie.value;
 }
 
-// 1. Ticket erstellen
+// 1. Ticket erstellen (Zuweisung zum echten, angemeldeten User)
 export async function createTicket(formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -25,18 +20,17 @@ export async function createTicket(formData: FormData) {
 
   if (!title || !description) return;
 
-  const testUser = await getOrCreateTestUser();
+  const userId = await getLoggedInUserId(); // Holt die echte User-ID aus dem Cookie
 
   await db.ticket.create({
     data: {
       title,
       description,
       priority,
-      userId: testUser.id,
+      userId: userId, // Ticket dem angemeldeten Benutzer zuweisen
     },
   });
 
-  // Aktualisiert die Seite sofort mit den neuen Daten
   revalidatePath("/");
 }
 

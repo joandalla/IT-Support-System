@@ -1,4 +1,4 @@
-"use client"; // Offiziell eine interaktive Client-Komponente
+"use client";
 
 import { useState } from "react";
 import { createTicket, updateTicketStatus, deleteTicket } from "../app/actions/tickets";
@@ -59,7 +59,6 @@ export default function TicketDashboard({ initialTickets, currentUser }: TicketD
           </div>
           
           <div className="flex items-center gap-4">
-            {/* UX Upgrade: Kein Formular mehr nötig für Logout, direkte Client-Action */}
             <button 
               onClick={async () => {
                 await logoutUser();
@@ -74,8 +73,8 @@ export default function TicketDashboard({ initialTickets, currentUser }: TicketD
           </div>
         </header>
 
-        {/* Dashboard Kennzahlen */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Dashboard Kennzahlen (Geändert auf md:grid-cols-4 für perfekte Laptop-Ansicht) */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <button 
             onClick={() => setActiveFilter("ALL")}
             className={`p-4 rounded-xl border transition-all text-left cursor-pointer ${activeFilter === "ALL" ? "bg-blue-50 border-blue-300 ring-2 ring-blue-100 shadow-sm" : "bg-white border-slate-200 shadow-sm hover:translate-y-[-2px]"}`}
@@ -149,11 +148,11 @@ export default function TicketDashboard({ initialTickets, currentUser }: TicketD
           </div>
         </section>
 
-        {/* Responsive Zwei-Spalten-Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Responsive Zwei-Spalten-Layout (Geändert auf md:grid-cols-3 für perfekte Laptop-Ansicht) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           
           {/* Spalte 1: Formular */}
-          <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm lg:sticky lg:top-8">
+          <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:sticky md:top-8">
             <h2 className="text-lg font-bold mb-4 text-slate-700 border-b pb-2">Neues Ticket erfassen</h2>
             
             <form 
@@ -208,8 +207,8 @@ export default function TicketDashboard({ initialTickets, currentUser }: TicketD
             </form>
           </section>
 
-          {/* Spalte 2: Ticketliste */}
-          <section className="lg:col-span-2">
+          {/* Spalte 2: Ticketliste (Geändert auf md:col-span-2) */}
+          <section className="md:col-span-2">
             <h2 className="text-lg font-bold mb-4 text-slate-700 border-b pb-2">
               Gemeldete Vorfälle ({filteredTickets.length})
             </h2>
@@ -244,7 +243,6 @@ export default function TicketDashboard({ initialTickets, currentUser }: TicketD
 
                     <div className="flex flex-wrap justify-between items-center gap-4 pt-3 border-t border-slate-100 font-medium">
                       
-                      {/* UX-Upgrade: Kein Formular/Speichern-Button mehr! Echtzeit-Speicherung bei Änderung */}
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-slate-400 font-bold uppercase">Status:</span>
                         <select
