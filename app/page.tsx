@@ -25,13 +25,11 @@ export default async function Home() {
 
   // Rollenbasierte Datenbankabfrage (RBAC)
   if (currentUser.role === "ADMIN") {
-    // Joan Admin sieht ALLE Tickets im System
     tickets = await db.ticket.findMany({
       include: { user: true },
       orderBy: { createdAt: "desc" },
     });
   } else {
-    // Max Mitarbeiter sieht NUR seine eigenen erstellten Tickets
     tickets = await db.ticket.findMany({
       where: { userId: currentUser.id },
       include: { user: true },

@@ -26,7 +26,6 @@ export async function registerUser(formData: FormData) {
     },
   });
 
-  // Next.js 15 Standard: cookies() mit await aufrufen
   const cookieStore = await cookies();
   cookieStore.set("session", user.id, {
     httpOnly: true,

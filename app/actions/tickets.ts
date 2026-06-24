@@ -22,7 +22,7 @@ export async function createTicket(formData: FormData) {
 
   if (!title || !description) return;
 
-  const userId = await getLoggedInUserId(); // Holt die echte User-ID sicher auf dem Server aus dem Cookie
+  const userId = await getLoggedInUserId(); 
 
   await db.ticket.create({
     data: {
